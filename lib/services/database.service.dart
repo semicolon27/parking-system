@@ -104,7 +104,7 @@ class DatabaseService {
     final db = await _databaseService.database;
     final List<Map<String, dynamic>> maps =
         await db.rawQuery("""SELECT * FROM karcis 
-          INNER JOIN tipe_kendaraan ON karcis.id_tipe_kendaraan = karcis.id_tipe_kendaraan""");
+          INNER JOIN tipe_kendaraan ON karcis.id_tipe_kendaraan = tipe_kendaraan.id_tipe_kendaraan""");
     return List.generate(maps.length, (index) => Karcis.fromMap(maps[index]));
   }
 }
