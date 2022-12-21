@@ -57,7 +57,7 @@ class DatabaseService {
           id_tipe_kendaraan TEXT PRIMARY KEY,
           nama_tipe_kendaraan TEXT,
           harga_awal INTEGER,
-          harga_perjam INTEGER,
+          harga_perjam INTEGER
         )''',
     );
     // INSERT INITIAL DATA INTO TIPE_KENDARAAN

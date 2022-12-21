@@ -21,6 +21,7 @@ class CupertinoParkingSystemApp extends StatelessWidget {
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      title: "Parking System",
       theme: ThemeData(
         brightness: Brightness.light,
         fontFamily: 'SF',
