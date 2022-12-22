@@ -51,7 +51,7 @@ class KarcisKeluarVM extends BaseViewModel {
       await _dbService.bayarParkir(karcis!);
 
       await _utils.tampilInfoDialog(
-        judul: 'Error',
+        judul: 'Info',
         isi: 'Berhasil bayar parkir.',
       );
       karcis = null;

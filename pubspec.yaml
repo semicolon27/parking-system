@@ -41,6 +41,10 @@ dependencies:
   intl: ^0.18.0
   easy_table: ^2.3.0
   sqlite3_flutter_libs: ^0.5.12
+  window_size:
+    git:
+      url: https://github.com/google/flutter-desktop-embedding
+      path: plugins/window_size
 
 dev_dependencies:
   sqflite_common_ffi: ^2.2.0+1

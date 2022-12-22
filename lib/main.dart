@@ -19,6 +19,10 @@ class CupertinoParkingSystemApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: Colors.white),
+    );
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Parking System",
