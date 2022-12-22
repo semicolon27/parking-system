@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:parking_system/models/karcis.model.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:flutter/foundation.dart' show Platform;
 
 class DatabaseService {
   // Singleton pattern
@@ -27,7 +28,7 @@ class DatabaseService {
     // `path` package is best practice to ensure the path is correctly
     // constructed for each platform.
     var db = await databaseFactory.openDatabase(
-      "$dir/database.db",
+      Platform.isAndroid ? inMemoryDatabasePath : "$dir/database.db",
       options: OpenDatabaseOptions(
         onCreate: _onCreate,
         version: 1,
@@ -71,7 +72,7 @@ class DatabaseService {
 
   Future<void> buatKarcisMasuk(Karcis karcis) async {
     final db = await _databaseService.database;
-    await db.rawQuery('INSERT INTO karcis VALUES (?, ?, ?, ?, ?, "")', [
+    await db.rawQuery("INSERT INTO karcis VALUES (?, ?, ?, ?, ?, '')", [
       karcis.idKarcis,
       karcis.platNomor,
       karcis.idTipeKendaraan,
