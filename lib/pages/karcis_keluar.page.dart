@@ -10,6 +10,7 @@ class KarcisKeluarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // memanggil kelas provider KarcisKeluarVM
     return ViewModelBuilder<KarcisKeluarVM>.reactive(
       viewModelBuilder: () => KarcisKeluarVM(),
       builder: (context, vm, child) {
@@ -129,7 +130,7 @@ class KarcisKeluarPage extends StatelessWidget {
                           horizontal: 100,
                         ),
                         minSize: 35,
-                        onPressed: vm.isBusy ? null : () => vm.getKarcisData(),
+                        onPressed: () => vm.clear(),
                         child: vm.isBusy
                             ? const CupertinoActivityIndicator()
                             : const Text(

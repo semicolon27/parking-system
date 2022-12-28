@@ -21,24 +21,29 @@ class ListKarcisPage extends StatelessWidget {
         return Scaffold(
           body: CustomScrollView(
             slivers: <Widget>[
+              // appbar atau navbar dari page
               const CupertinoSliverNavigationBar(
+                // judul halaman
                 largeTitle: Text('List Karcis'),
               ),
+              // mengisi area widget yang kosong
               SliverFillRemaining(
                 child: Padding(
                   // mensetting padding vertikal dan horizontal secara teripisah
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                  // tabel dari package https://pub.dev/packages/easy_table
                   child: EasyTable<Karcis>(
                     EasyTableModel<Karcis>(
                       rows: vm.listKarcis,
                       columns: [
                         EasyTableColumn(
                           name: 'No.',
+                          // mendapatkan index row dan menambahkannya dengan 1 untuk nomer urut di tabel
                           intValue: (row) => vm.listKarcis.indexOf(row) + 1,
                           width: 40,
                         ),
                         EasyTableColumn(
-                          name: 'Nama',
+                          name: 'ID Karcis',
                           stringValue: (row) => row.idKarcis,
                           width: 300,
                         ),
@@ -54,6 +59,14 @@ class ListKarcisPage extends StatelessWidget {
                           name: 'Status Bayar',
                           stringValue: (row) =>
                               row.isBayar ? 'Sudah Bayar' : 'Belum Bayar',
+                        ),
+                        EasyTableColumn(
+                          name: 'Tarif',
+                          // jika sudah bayar, maka hitung dan isi row tarif
+                          // jika tidak maka kosong
+                          stringValue: (row) => row.isBayar
+                              ? Utils().formatNominal(vm.getTotalTarif(row))
+                              : '',
                         ),
                         EasyTableColumn(
                           name: 'Waktu Masuk',

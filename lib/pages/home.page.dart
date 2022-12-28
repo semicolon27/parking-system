@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -39,7 +41,7 @@ class CupertinoStoreHomePage extends StatelessWidget {
                 ),
                 CupertinoButton(
                   child: const Text('Exit Aplikasi'),
-                  onPressed: () => Get.to(() => const KarcisKeluarPage()),
+                  onPressed: () => exit(0),
                 ),
               ],
             ),

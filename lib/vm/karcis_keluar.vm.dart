@@ -5,10 +5,8 @@ import 'package:parking_system/services/database.service.dart';
 import 'package:parking_system/utils.dart';
 import 'package:stacked/stacked.dart';
 
-// untuk randomAlpha
-import 'package:random_string/random_string.dart';
-
 class KarcisKeluarVM extends BaseViewModel {
+  // instance kelas DatabaseService
   final DatabaseService _dbService = DatabaseService();
   final Utils _utils = Utils();
 
@@ -24,9 +22,10 @@ class KarcisKeluarVM extends BaseViewModel {
     try {
       karcis = await _dbService.getDataKarcis(idKarcisController.text);
 
-      var dateFormat = DateFormat('yyyyMMddhhmmss');
+      var dateFormat = DateFormat('yyyyMMddHHmmss');
       karcis!.waktuKeluar = dateFormat.format(_waktuAkhir);
       karcis!.isBayar = true;
+      // Apabila list karcis kosong
     } on RangeError catch (err) {
       _utils.tampilInfoDialog(
         judul: 'Info',
@@ -103,5 +102,11 @@ class KarcisKeluarVM extends BaseViewModel {
     int durasiJam = getDurasiJam();
     int total = karcis!.hargaAwal + (durasiJam * karcis!.hargaPerjam);
     return total;
+  }
+
+  void clear() {
+    karcis = null;
+    idKarcisController.text = "";
+    notifyListeners();
   }
 }

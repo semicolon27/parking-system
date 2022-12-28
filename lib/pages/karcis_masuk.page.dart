@@ -9,6 +9,7 @@ class KarcisMasukPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // memanggil kelas provider KarcisMasukVM
     return ViewModelBuilder<KarcisMasukVM>.reactive(
       viewModelBuilder: () => KarcisMasukVM(),
       builder: (context, vm, child) {
@@ -30,20 +31,25 @@ class KarcisMasukPage extends StatelessWidget {
                         child: Text('HARAP PILIH TIPE KENDARAAN'),
                       ),
 
+                    // jika tipe mobil maka tampil gambar mobil
                     if (vm.idTipeKendaraan == 'B1')
                       // ClipRRect mmebuat gambar menjadi membulat atau ada border radius
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
+                        // ambil gambar dari internet
                         child: Image.network(
                           'https://momobil.id/news/wp-content/uploads/2022/10/Toyota-Supra-Mk4-1024x576.jpg',
                           height: 300,
                           fit: BoxFit.fitWidth,
                         ),
                       ),
+
+                    // jika tipe motor maka tampil gambar motor
                     if (vm.idTipeKendaraan == 'A1')
                       // ClipRRect mmebuat gambar menjadi membulat atau ada border radius
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
+                        // ambil gambar dari assets
                         child: Image.asset(
                           'assets/img/supra.jpg',
                           height: 300,
@@ -117,6 +123,7 @@ class KarcisMasukPage extends StatelessWidget {
   }
 }
 
+// komponen untuk tipe kendaraan
 class ButtonTipeKendaraan extends StatelessWidget {
   final String id;
   final String nama;
@@ -137,12 +144,15 @@ class ButtonTipeKendaraan extends StatelessWidget {
       onTap: () => vm.idTipeKendaraan = id,
       child: Container(
         decoration: BoxDecoration(
+          // jika yang dipilih sama dengan id tombol nya, maka warna backgroundnya biru. kalo ngga putih
           color: vm.idTipeKendaraan == id
               ? Styles.primaryColor
               : Colors.transparent,
           border: Border.all(
             color: Styles.primaryColor,
           ),
+          // jika tombol dikanan, maka ujung atas kanan dan ujung atas bawah nya membulat
+          // jika tombol dikiri, maka ujung atas kiri dan ujung atas bawah nya membulat
           borderRadius: BorderRadius.only(
             topLeft: isKanan ? Radius.zero : Radius.circular(5),
             bottomLeft: isKanan ? Radius.zero : Radius.circular(5),
@@ -156,6 +166,7 @@ class ButtonTipeKendaraan extends StatelessWidget {
         ),
         child: Text(
           nama,
+          // jika yang dipilih sama dengan id tombol nya, maka warna textnya putih. kalo ngga biru
           style: TextStyle(
             color:
                 vm.idTipeKendaraan == id ? Colors.white : Styles.primaryColor,

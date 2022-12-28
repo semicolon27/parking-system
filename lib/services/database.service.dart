@@ -3,15 +3,29 @@ import 'dart:io';
 import 'package:parking_system/models/karcis.model.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:flutter/foundation.dart' show Platform;
 
-class DatabaseService {
+abstract class Service {
+  Future<Database> _initDatabase();
+  Future<void> _onCreate(Database db, int version);
+  Future<void> buatKarcisMasuk(Karcis karcis);
+  Future<void> bayarParkir(Karcis karcis);
+  Future<Karcis> getDataKarcis(String idKarcis);
+  Future<List<Karcis>> getListDataKarcis();
+}
+
+class DatabaseService implements Service {
   // Singleton pattern
   static final DatabaseService _databaseService = DatabaseService._internal();
   factory DatabaseService() => _databaseService;
   DatabaseService._internal();
 
+  // berisi koneksi database
   static Database? _database;
+  // getter variabel database.
+  // ketika akan mengambil variabel database, maka akan melakukan pengecekan terlebih dahulu
+  // apakah database null atau tidak.
+  // jika null maka akan memanggil fungsi _initDatabase() untuk mendapatkan koneksi database
+  // dan disimpan ke variabel database
   Future<Database> get database async {
     if (_database != null) return _database!;
     // Initialize the DB first time it is accessed
@@ -20,26 +34,33 @@ class DatabaseService {
     return _database!;
   }
 
+  // untuk mendapatkan koneksi database
+  @override
   Future<Database> _initDatabase() async {
     var databaseFactory = databaseFactoryFfi;
     String dir = Directory.current.path; // PATH_APP
 
-    // Set the path to the database. Note: Using the `join` function from the
-    // `path` package is best practice to ensure the path is correctly
-    // constructed for each platform.
     var db = await databaseFactory.openDatabase(
+      // lokasi database. jika di mobile maka akan disimpan sesuai konfigurasi dari package databasenya yaitu di variable inMemoryDatabasePath
+      // kalau desktop "$dir/database.db" itu ada di folder project
       Platform.isAndroid ? inMemoryDatabasePath : "$dir/database.db",
       options: OpenDatabaseOptions(
+        // ketika datbase tidak ada maka akan memanggil fungsi _onCreate
         onCreate: _onCreate,
+        // ketika aplikasi di jalankan, dan database akan di cek versinya dengan di app.
+        //jika versinya sama di db dan app maka tidak akan membuat ulang database
         version: 1,
+        // mengaktifkan fitur foreign_keys untuk join table
         onConfigure: (db) async => await db.execute('PRAGMA foreign_keys = ON'),
       ),
     );
     return db;
   }
 
-  // When the database is first created, create a table to store tipe_kendaraan
-  // and a table to store karcis.
+  // Wfungsi yang di jalankan apabila database dibuat
+  // membuat tabel untuk karcis dan tipe kendaraan
+  // dan menginsert default value tipe kendaraan
+  @override
   Future<void> _onCreate(Database db, int version) async {
     // Run the CREATE {tipe_kendaraan} TABLE statement on the database.
     await db.execute(
@@ -70,6 +91,8 @@ class DatabaseService {
     );
   }
 
+  // insert karcis baru
+  @override
   Future<void> buatKarcisMasuk(Karcis karcis) async {
     final db = await _databaseService.database;
     await db.rawQuery("INSERT INTO karcis VALUES (?, ?, ?, ?, ?, '')", [
@@ -81,6 +104,8 @@ class DatabaseService {
     ]);
   }
 
+  // mengupdate karcis bayar menjadi 1 (true) atau sudah bayar yang sebelumnya 0 (false) atau belum bayar
+  @override
   Future<void> bayarParkir(Karcis karcis) async {
     final db = await _databaseService.database;
     await db.rawQuery(
@@ -92,15 +117,19 @@ class DatabaseService {
         ]);
   }
 
+  // mndapatkan detail karcis berdasarkan id nya
+  @override
   Future<Karcis> getDataKarcis(String idKarcis) async {
     final db = await _databaseService.database;
     final List<Map<String, dynamic>> maps =
         await db.rawQuery("""SELECT * FROM karcis 
-          INNER JOIN tipe_kendaraan ON karcis.id_tipe_kendaraan = karcis.id_tipe_kendaraan
+          INNER JOIN tipe_kendaraan ON karcis.id_tipe_kendaraan = tipe_kendaraan.id_tipe_kendaraan
           WHERE id_karcis = ?""", [idKarcis]);
     return Karcis.fromMap(maps[0]);
   }
 
+  // mendapatkan semua list karcis
+  @override
   Future<List<Karcis>> getListDataKarcis() async {
     final db = await _databaseService.database;
     final List<Map<String, dynamic>> maps =

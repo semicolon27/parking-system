@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 class Utils {
   // mendapatkan tanggal dengan contoh format 20221203183055
   String getTanggalJam() {
-    var dateFormat = DateFormat('yyyyMMddhhmmss');
+    var dateFormat = DateFormat('yyyyMMddHHmmss');
     return dateFormat.format(DateTime.now());
   }
 
@@ -47,17 +47,39 @@ class Utils {
     String jam = value.substring(8, 10);
     String menit = value.substring(10, 12);
     String detik = value.substring(12, 14);
-    return DateFormat('yyyy-MM-dd hh:mm:ss')
+    return DateFormat('yyyy-MM-dd HH:mm:ss')
         .parse('$tahun-$bulan-$hari $jam:$menit:$detik');
   }
 
+  // mengubah dari 20221224183021 menjadi 2022-12-24 18:30:21
+  // atau null jika terjadi error
+  DateTime? parseTextTanggalOrNull(String value) {
+    try {
+      String tahun = value.substring(0, 4);
+      String bulan = value.substring(4, 6);
+      String hari = value.substring(6, 8);
+      String jam = value.substring(8, 10);
+      String menit = value.substring(10, 12);
+      String detik = value.substring(12, 14);
+      return DateFormat('yyyy-MM-dd HH:mm:ss')
+          .parse('$tahun-$bulan-$hari $jam:$menit:$detik');
+    } catch (err) {
+      return null;
+    }
+  }
+
+  // mengubah dari 20221224183021 menjadi 2022-12-24 18:30:21
   String formatTextTanggal(String value) {
-    String tahun = value.substring(0, 4);
-    String bulan = value.substring(4, 6);
-    String hari = value.substring(6, 8);
-    String jam = value.substring(8, 10);
-    String menit = value.substring(10, 12);
-    String detik = value.substring(12, 14);
-    return '$tahun-$bulan-$hari $jam:$menit:$detik';
+    try {
+      String tahun = value.substring(0, 4);
+      String bulan = value.substring(4, 6);
+      String hari = value.substring(6, 8);
+      String jam = value.substring(8, 10);
+      String menit = value.substring(10, 12);
+      String detik = value.substring(12, 14);
+      return '$tahun-$bulan-$hari $jam:$menit:$detik';
+    } catch (err) {
+      return '';
+    }
   }
 }

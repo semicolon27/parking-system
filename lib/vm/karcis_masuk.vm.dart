@@ -8,6 +8,7 @@ import 'package:stacked/stacked.dart';
 import 'package:random_string/random_string.dart';
 
 class KarcisMasukVM extends BaseViewModel {
+  // instance kelas DatabaseService
   final DatabaseService _dbService = DatabaseService();
   final Utils _utils = Utils();
 
