@@ -51,7 +51,7 @@ class KarcisKeluarPage extends StatelessWidget {
                     ),
 
                     SizedBox(height: 30),
-                    // jika karcis tidak kosong atau null
+                    // tampilkan jika karcis tidak kosong atau null
                     if (vm.karcis != null)
                       Container(
                         width: 300,
@@ -108,6 +108,7 @@ class KarcisKeluarPage extends StatelessWidget {
                       ),
 
                     SizedBox(height: 20),
+                    // tampilkan jika karcis tidak kosong atau null
                     if (vm.karcis != null)
                       CupertinoButton(
                         color: Styles.secondaryColor,
@@ -116,13 +117,17 @@ class KarcisKeluarPage extends StatelessWidget {
                           horizontal: 100,
                         ),
                         minSize: 35,
+                        // jika sedang loading atau busy, maka di set null agar tidak bisa di pencet tombolnya
+                        // jika diklik  maka jalankan fungsi bayarParkir dari viewmodel
                         onPressed: vm.isBusy ? null : () => vm.bayarParkir(),
+                        // jika sedang loading atau busy, maka pakai indikator loading. jika ngga tampil text bayar.
                         child: vm.isBusy
                             ? const CupertinoActivityIndicator()
                             : const Text('Bayar'),
                       ),
 
                     SizedBox(height: 10),
+                    // tampilkan jika karcis tidak kosong atau null
                     if (vm.karcis != null)
                       CupertinoButton(
                         padding: const EdgeInsets.symmetric(
