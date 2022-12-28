@@ -2,9 +2,7 @@ import 'package:easy_table/easy_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:parking_system/models/karcis.model.dart';
-import 'package:parking_system/styles.dart';
 import 'package:parking_system/utils.dart';
-import 'package:parking_system/vm/karcis_masuk.vm.dart';
 import 'package:parking_system/vm/list_karcis.vm.dart';
 import 'package:stacked/stacked.dart';
 
